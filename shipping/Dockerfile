@@ -8,8 +8,8 @@ RUN mvn clean package && \
 
 FROM eclipse-temurin:17-jre-alpine
 EXPOSE 8080
-RUN addgroup -S roboshop && adduser -S roboshop -G roboshop && \
-    chown -R roboshop:roboshop /opt/server
+RUN addgroup -S roboshop && adduser -S roboshop -G roboshop
+
 WORKDIR /opt/server
 ENV CART_ENDPOINT="cart:8080" \
     DB_HOST="mysql"

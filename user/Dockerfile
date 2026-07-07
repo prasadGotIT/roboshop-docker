@@ -7,9 +7,9 @@ RUN npm install
  
 
 FROM node:20.19.5-alpine3.22
-RUN addgroup -S roboshop && adduser -S roboshop -G roboshop && \
 WORKDIR /opt/server
-COPY --from=build /opt/server /opt/server
+RUN addgroup -S roboshop && adduser -S roboshop -G roboshop && \
+    chown -R roboshop:roboshop /opt/server
 EXPOSE 8080
 LABEL com.project="roboshop" \
       component="user" \
@@ -17,9 +17,9 @@ LABEL com.project="roboshop" \
 ENV MONGO="true" \
      REDIS_URL="redis://redis:6379" \
      MONGO_URL="mongodb://mongodb:27017/users"
-RUN chown -R roboshop:roboshop /opt/server
+COPY --from=build --chown=roboshop:roboshop /opt/server /opt/server/
 USER roboshop     
-CMD ["node", "server.js"]
+CMD ["server.js"]
 ENTRYPOINT [ "node" ]
 
 
