@@ -12,23 +12,23 @@ services:
     image: prasadsripathi/mongodb:v1
     container_name: mongodb
     volumes:
-      -mongodb:/data/db
+    - mongodb:/data/db
   redis:
     image: redis:7.0
     container_name: redis
     volumes:
-      -redis:/data
+    - redis:/data
   mysql:
     build: ./mysql
     image: prasadsripathi/mysql:v1
     container_name: mysql
     volumes:
-      - mysql:/var/lib/mysql
+    - mysql:/var/lib/mysql
   rabbitmq:
     image: rabbitmq:3
     container_name: rabbitmq
     volumes:
-      - rabbitmq:/var/lib/rabbitmq
+    - rabbitmq:/var/lib/rabbitmq
     environment:
        RABBITMQ_DEFAULT_USER: roboshop
        RABBITMQ_DEFAULT_PASS: roboshop123
@@ -37,23 +37,23 @@ services:
     image: prasadsripathi/user:v1
     container_name: user
     depends_on:
-      - mongodb
-      - redis
+    - mongodb
+    - redis
   cart:
     build: ./cart
     image: prasadsripathi/cart:v1
     container_name: cart
     depends_on:
-      - redis
-      - catalogue
-    shipping:
+    - redis
+    - catalogue
+  shipping:
       build: ./shipping
       image: prasadsripathi/shipping:v1
       container_name: shipping
       depends_on:
       - mysql
       - cart
-    payment:
+  payment:
       build: ./payment
       image:  prasadsripathi/payment:v1
       container_name: payment
@@ -61,7 +61,7 @@ services:
       - rabbitmq
       - cart
       - user
-    frontend:
+  frontend:
       build: ./frontend
       image: prasadsripathi/frontend:v1
       container_name: frontend
@@ -73,14 +73,14 @@ services:
       - cart
       - shipping
       - payment
-    networks:
-      default:
-        driver: bridge
-        name: roboshop
-        external: false
-    volumes:
-        mongodb:
-        redis:
-        mysql:
-        rabbitmq:
+networks:
+  default:
+    driver: bridge
+    name: roboshop
+    external: false
+volumes:
+  mongodb:
+  redis:
+  mysql:
+  rabbitmq:
 
